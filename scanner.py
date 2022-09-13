@@ -115,7 +115,7 @@ class HashMap:
    
 #============================================================
 #Starting Hash
-h = HashMap()
+hash = {}
 
 #using Scan_Files runs through the main directory
 obj = os.scandir(main_source_dir)
@@ -128,9 +128,9 @@ with os.scandir(main_source_dir) as itr:
 
         dir_name = main_source_dir + entry.name
 
-        h.add(dir_name, Scan_Files(dir_name))
-
-    #h.print()
+        hash[dir_name] = Scan_Files(dir_name)
+         
+    #print(hash)
 
 
 #while itr running, use Scan_Files again to go into specific directory 

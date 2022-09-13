@@ -19,11 +19,20 @@ def Copy_Files(source_dir, file_name, dest_dir):
     cur_path = source_dir + "/" + file_name
 
     #final path of the file edit
-    final_path = dest_dir + file_name + "(copied_by_python).pdf"
+    final_path = dest_dir + "/" + file_name + "(copied_by_python).pdf"
 
     print(cur_path, final_path)
 
-    shutil.copyfile(cur_path, final_path)
+    try:
+        shutil.copyfile(cur_path, final_path)
+                
+    except shutil.SameFileError:
+        print(file_name + "is already in the folder")
+        return
+
+        
+
+
 
 
 def Scan_Files(source_dir):
@@ -121,7 +130,7 @@ with os.scandir(main_source_dir) as itr:
 
         h.add(dir_name, Scan_Files(dir_name))
 
-    h.print()
+    #h.print()
 
 
 #while itr running, use Scan_Files again to go into specific directory 

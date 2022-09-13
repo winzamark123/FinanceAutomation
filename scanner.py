@@ -21,7 +21,7 @@ def Copy_Files(source_dir, file_name, dest_dir):
     #final path of the file edit
     final_path = dest_dir + "/" + file_name + "(copied_by_python).pdf"
 
-    print(cur_path, final_path)
+    #print(cur_path, final_path)
 
     try:
         shutil.copyfile(cur_path, final_path)
@@ -29,11 +29,6 @@ def Copy_Files(source_dir, file_name, dest_dir):
     except shutil.SameFileError:
         print(file_name + "is already in the folder")
         return
-
-        
-
-
-
 
 def Scan_Files(source_dir):
 
@@ -48,11 +43,12 @@ def Scan_Files(source_dir):
 #starting the loop running through all files contained within the directory 
         for entry in itr :
             file_name = entry.name
-            
-            print(file_name)
-            
-            names_array.append(file_name)
-            #Copy_Files(source_dir, file_name, dest_dir)
+
+            if file_name.endswith(".pdf"):
+                #print(file_name)
+                
+                names_array.append(file_name)
+                #Copy_Files(source_dir, file_name, dest_dir)
     
     return names_array
 

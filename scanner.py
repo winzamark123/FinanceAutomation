@@ -30,8 +30,8 @@ def Copy_Files(source_dir, file_name, dest_dir):
         print(file_name + "is already in the folder")
         return
 
-#scanning the files within the dir
-def Scan_Files(source_dir):
+#scanning the files within the dir and RETURNS an Array based on file type
+def Scan_Files(source_dir, file_type):
 
     names_array = []
 
@@ -45,19 +45,22 @@ def Scan_Files(source_dir):
         for entry in itr :
             file_name = entry.name
 
-            if file_name.endswith(".pdf"):
+            if file_name.endswith(file_type):
                 #print(file_name)
                 
                 names_array.append(file_name)
                 #Copy_Files(source_dir, file_name, dest_dir)
-    
+
+    #returns an array of file names
     return names_array
    
 #============================================================
 #Starting Hash
+print("Using Scanner.py!")
+print("")
 hash = {}
 
-#using Scan_Files runs through the main directory
+#using Scan_Files runs through the main directory (Finance_INFO)
 obj = os.scandir(main_source_dir)
 
 with os.scandir(main_source_dir) as itr:
@@ -66,8 +69,12 @@ with os.scandir(main_source_dir) as itr:
         if entry.name.startswith("."):
             continue
 
+        #dir includes: Tuition / Rent / Bank 
         dir_name = main_source_dir + entry.name
 
-        hash[dir_name] = Scan_Files(dir_name)
+        #using hash to store every pdf files in each dir 
+        #KEY: dir_name
+        #VALUE: array of filenames
+        hash[dir_name] = Scan_Files(dir_name, ".pdf")
          
     #print(hash)

@@ -8,7 +8,7 @@ cur_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation"
 
 #convert the file_name into CSV
 def convert_to_CSV(file_name):
-    c = pdftables_api.Client('zu9hzrgc0b3u')
+    c = pdftables_api.Client('p6cuwg6w4n60')
     c.csv(file_name, file_name) 
 #replace c.xlsx with c.csv to convert to CSV
 
@@ -36,16 +36,19 @@ def copying_PDF_files():
 
     for key, values in hash.items():
         for value in values:
-            for existing_pdf_file in Existing_PDF_Files:
-                #check if the name is the same 
-          
-                if value + "(copied_by_python).pdf" == existing_pdf_file:
-                    print(value + " and " + existing_pdf_file + "already exists")
-                    continue
-                
-                Copy_Files(str(key), str(value), cur_dir)
+            #check if the name is the same 
+            updated_value = value + "(copied_by_python).pdf"
 
+            if updated_value in Existing_PDF_Files:
+                print(updated_value + " Already Exists")
+                continue
             
+            #print("Copying" + str(value))
+            Copy_Files(str(key), str(value), cur_dir)
+
+
+
+
             
             
     print("Finished Copying!")
@@ -73,7 +76,7 @@ def moving_PDF_files():
 
 #converting all pdf files in PDF_Copied to csv files
 def convert_all_to_CSV():
-    PDF_Files = Scan_Files(pdf_dest_dir, ".pdf")
+    PDF_Files = Scan_Files(cur_dir, ".pdf")
 
     for pdf_file in PDF_Files:
         convert_to_CSV(pdf_file)
@@ -91,9 +94,6 @@ def checking_existing_files():
 #=====================================
 #STARTING THE PROGRAM!
 
-demo = checking_existing_files()
-
-print(demo)
 copying_PDF_files()
 convert_all_to_CSV()
 moving_CSV_files()

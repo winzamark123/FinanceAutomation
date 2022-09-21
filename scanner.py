@@ -1,5 +1,7 @@
 import shutil
 import os 
+import csv
+import pandas as pd
 
 #Starting Directories
 main_source_dir = "/Users/wincheng/Desktop/Finance_INFO/"
@@ -53,7 +55,23 @@ def Scan_Files(source_dir, file_type):
 
     #returns an array of file names
     return names_array
-   
+
+def CSV_Reader(source_dir, file_name):
+    #with open(source_dir + file_name, 'r') as file:
+    #    csvreader = csv.reader(file)
+
+    df = pd.read_csv(source_dir + file_name)
+    col_list = ["Printable Bill"]
+    print(df["Printable Bill"])
+
+    #Specific to Reading Tuition Payments
+    #The first row of the CSV Files determines the Columns and name of the Col_List
+    #Therefore needs to Append the first row of each CSV File Read:
+    #   (Col 1: Key or Labeled ("Purchases and Adjustments"))
+    #   (Col 2: Date)
+    #   (Col 3: Name or Purpose)
+    #   (Col 4: The Amount $)
+             
 #============================================================
 #Starting Hash
 print("Using Scanner.py!")

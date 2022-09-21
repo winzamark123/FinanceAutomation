@@ -1,6 +1,8 @@
 import gspread
 import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
+from scanner import *
+from convert_pdf import *
 
 #Connecting to Google Sheets
 #------------------------------------------
@@ -15,7 +17,11 @@ client = gspread.authorize(cred)
 #------------------------------------------
 
 # Open the spreadsheet
-sheet = client.open("Personal Finance")
+ss = client.open("Personal Finance")
+ws = ss.worksheet('Sheet1') 
+val = ws.acell('B2').value
 
-val = sheet.acell('B1').value
 print(val)
+print()
+
+CSV_Reader(csv_dest_dir, "/Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")

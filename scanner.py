@@ -56,13 +56,28 @@ def Scan_Files(source_dir, file_type):
     #returns an array of file names
     return names_array
 
-def CSV_Reader(source_dir, file_name):
+#Creating empty CSV Files for each presented in CSV_Copied_dir
+def Create_Empty_CSV(source_dir, file_name):
+    dest_dir = CSV_Edited_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/CSV_Edited"
+    
+
+
+#reading and editing Tuition type CSV_Files
+def Tution_CSV_Edit(source_dir, file_name):
     #with open(source_dir + file_name, 'r') as file:
     #    csvreader = csv.reader(file)
 
-    df = pd.read_csv(source_dir + file_name)
-    col_list = ["Printable Bill"]
-    print(df["Printable Bill"])
+    path_file = source_dir + "/" + file_name
+    CSV_Edited_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/CSV_Edited"
+
+    #Need to create an empty CSV File for each CSV presented first 
+    #with open(path_file, "r") as F1:
+        #with open()
+
+    
+
+    #col_list = ["Printable Bill"]
+    #print(df["Printable Bill"])
 
     #Specific to Reading Tuition Payments
     #The first row of the CSV Files determines the Columns and name of the Col_List
@@ -71,7 +86,13 @@ def CSV_Reader(source_dir, file_name):
     #   (Col 2: Date)
     #   (Col 3: Name or Purpose)
     #   (Col 4: The Amount $)
+
+    header_list = {"Key", "Date", "Name/Purpose", "Amount"}
+    
+
+    df.to_csv(CSV_Edited_dir + "/NEW_" + file_name, header = header_list, index = False)
              
+
 #============================================================
 #Starting Hash
 print("Using Scanner.py!")

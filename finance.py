@@ -1,5 +1,4 @@
 import gspread
-import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
 from convert_pdf import *
@@ -24,4 +23,5 @@ val = ws.acell('B2').value
 print(val)
 print()
 
-CSV_Reader(csv_dest_dir, "/Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
+Tution_CSV_Edit(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
+#CSV_Reader(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")

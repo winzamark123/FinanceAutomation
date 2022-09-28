@@ -87,10 +87,14 @@ def Tution_CSV_Edit(source_dir, file_name):
     #   (Col 3: Name or Purpose)
     #   (Col 4: The Amount $)
 
-    header_list = {"Key", "Date", "Name/Purpose", "Amount"}
+    header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
+
+    df = pd.read_csv(source_dir + "/" + file_name)
+    df.to_csv(header=header_list)
+    print(df)
     
 
-    df.to_csv(CSV_Edited_dir + "/NEW_" + file_name, header = header_list, index = False)
+    #df.to_csv(CSV_Edited_dir + "/NEW_" + file_name, header = header_list, index = False)
              
 
 #============================================================

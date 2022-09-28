@@ -62,22 +62,9 @@ def Create_Empty_CSV(source_dir, file_name):
     
 
 
-#reading and editing Tuition type CSV_Files
-def Tution_CSV_Edit(source_dir, file_name):
-    #with open(source_dir + file_name, 'r') as file:
-    #    csvreader = csv.reader(file)
-
+#reading and editing Tuition type CSV_Files (5 Columns)
+def Tuition_CSV_Edit(source_dir, file_name):
     path_file = source_dir + "/" + file_name
-    CSV_Edited_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/CSV_Edited"
-
-    #Need to create an empty CSV File for each CSV presented first 
-    #with open(path_file, "r") as F1:
-        #with open()
-
-    
-
-    #col_list = ["Printable Bill"]
-    #print(df["Printable Bill"])
 
     #Specific to Reading Tuition Payments
     #The first row of the CSV Files determines the Columns and name of the Col_List
@@ -87,15 +74,39 @@ def Tution_CSV_Edit(source_dir, file_name):
     #   (Col 3: Name or Purpose)
     #   (Col 4: The Amount $)
 
+    path = source_dir + "/" + file_name
+    
+    #creating a header list to be input into the csv file
     header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
 
-    df = pd.read_csv(source_dir + "/" + file_name)
-    df.to_csv(header=header_list)
-    print(df)
-    
+    #reads csv
+    df = pd.read_csv(path)
 
-    #df.to_csv(CSV_Edited_dir + "/NEW_" + file_name, header = header_list, index = False)
-             
+    #edits csv, inputting the header
+    df.to_csv(path, header=header_list, index=False)
+    
+#reading and editing Rent type CSV_Files (2 Columns)
+def Rent_CSV_Edit(source_dir, file_name):
+    path_file = source_dir + "/" + file_name
+
+        #Specific to Reading Tuition Payments
+        #The first row of the CSV Files determines the Columns and name of the Col_List
+        #Therefore needs to Append the first row of each CSV File Read:
+        #   (Col 1: Key or Labeled ("Purchases and Adjustments"))
+        #   (Col 2: Date)
+        #   (Col 3: Name or Purpose)
+        #   (Col 4: The Amount $)
+
+    path = source_dir + "/" + file_name
+        
+        #creating a header list to be input into the csv file
+    header_list = ["Date", "Amount"]
+
+        #reads csv
+    df = pd.read_csv(path)
+
+        #edits csv, inputting the header
+    df.to_csv(path, header=header_list, index=False)
 
 #============================================================
 #Starting Hash

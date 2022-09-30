@@ -56,58 +56,16 @@ def Scan_Files(source_dir, file_type):
     #returns an array of file names
     return names_array
 
-#Creating empty CSV Files for each presented in CSV_Copied_dir
-def Create_Empty_CSV(source_dir, file_name):
-    dest_dir = CSV_Edited_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/CSV_Edited"
-    
-
-
-#reading and editing Tuition type CSV_Files (5 Columns)
-def Tuition_CSV_Edit(source_dir, file_name):
-    path_file = source_dir + "/" + file_name
-
-    #Specific to Reading Tuition Payments
-    #The first row of the CSV Files determines the Columns and name of the Col_List
-    #Therefore needs to Append the first row of each CSV File Read:
-    #   (Col 1: Key or Labeled ("Purchases and Adjustments"))
-    #   (Col 2: Date)
-    #   (Col 3: Name or Purpose)
-    #   (Col 4: The Amount $)
-
+#Edits CSV depending on header_type
+def CSV_Edit(source_dir, file_name, header_list):
+    #Each type of files will contain different amount / ways of header_type
     path = source_dir + "/" + file_name
-    
-    #creating a header list to be input into the csv file
-    header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
 
     #reads csv
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, lineterminator='\n')
 
     #edits csv, inputting the header
     df.to_csv(path, header=header_list, index=False)
-    
-#reading and editing Rent type CSV_Files (2 Columns)
-def Rent_CSV_Edit(source_dir, file_name):
-    path_file = source_dir + "/" + file_name
-
-        #Specific to Reading Tuition Payments
-        #The first row of the CSV Files determines the Columns and name of the Col_List
-        #Therefore needs to Append the first row of each CSV File Read:
-        #   (Col 1: Key or Labeled ("Purchases and Adjustments"))
-        #   (Col 2: Date)
-        #   (Col 3: Name or Purpose)
-        #   (Col 4: The Amount $)
-
-    path = source_dir + "/" + file_name
-        
-        #creating a header list to be input into the csv file
-    header_list = ["Date", "Amount"]
-
-        #reads csv
-    df = pd.read_csv(path)
-
-        #edits csv, inputting the header
-    df.to_csv(path, header=header_list, index=False)
-
 #============================================================
 #Starting Hash
 print("Using Scanner.py!")

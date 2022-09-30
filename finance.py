@@ -3,6 +3,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
 from convert_pdf import *
 
+bank_header_list = ["Transaction Date", "Posting Date", "Description", "Ref Num", "Acc Num", "Amount $"]
+tuition_header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
+rent_header_list = ["Date", "Amount"]
+
+
 #Connecting to Google Sheets
 #------------------------------------------
 # defining the scope of the application
@@ -23,5 +28,6 @@ val = ws.acell('B2').value
 print(val)
 print()
 
-Tuition_CSV_Edit(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
+#Tuition_CSV_Edit(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
+CSV_Edit(csv_dest_dir, "eStmt_2022-09-25.pdf(copied_by_python).pdf.csv", bank_header_list)
 #CSV_Reader(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")

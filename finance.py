@@ -3,7 +3,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
 from convert_pdf import *
 
-bank_header_list = ["Transaction Date", "Posting Date", "Description", "Ref Num", "Acc Num", "Amount $"]
+bank_header_list = ["Transaction Date", "Description", "Amount", "Running Bal"]
 tuition_header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
 rent_header_list = ["Date", "Amount"]
 
@@ -28,6 +28,5 @@ val = ws.acell('B2').value
 print(val)
 print()
 
-#Tuition_CSV_Edit(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
-CSV_Edit(csv_dest_dir, "eStmt_2022-09-25.pdf(copied_by_python).pdf.csv", bank_header_list)
-#CSV_Reader(csv_dest_dir, "Tuition_Fall_Aug2022.pdf(copied_by_python).pdf.csv")
+Print_CSV(csv_dest_dir, "stmt.csv")
+#CSV_Edit(csv_dest_dir, "stmt.csv", bank_header_list)

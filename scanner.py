@@ -56,13 +56,23 @@ def Scan_Files(source_dir, file_type):
     #returns an array of file names
     return names_array
 
+def Print_CSV(source_dir, file_name):
+    path = source_dir + "/" + file_name
+    pd.set_option("display.max_columns",4)
+    #reads csv
+    df = pd.read_csv(path)
+    
+
+    print(df)
+
 #Edits CSV depending on header_type
+#CURRENTLY SPECIFIC TO BANKSTMT
 def CSV_Edit(source_dir, file_name, header_list):
     #Each type of files will contain different amount / ways of header_type
     path = source_dir + "/" + file_name
 
     #reads csv
-    df = pd.read_csv(path, lineterminator='\n')
+    df = pd.read_csv(path, skiprows = 5)
 
     #edits csv, inputting the header
     df.to_csv(path, header=header_list, index=False)

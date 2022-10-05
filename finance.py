@@ -31,10 +31,10 @@ def Connect_to_GSpread():
 #Creates a new worksheet with each Month
 def New_Month(cur_Month, cur_Year):
     ss = Connect_to_GSpread()
-    worksheet = ss.add_worksheet(title= cur_Month + "-" + cur_Year)
+    worksheet = ss.add_worksheet(title= cur_Month + "-" + cur_Year, rows = 50, cols = 50)
     
     #Changing the Text Type
-    worksheet.format("A1: L32",{
+    worksheet.format("A1:L4",{
         #Changing the Text
         "textFormat": {
             "fontFamily" : "Georgia",
@@ -47,9 +47,9 @@ def New_Month(cur_Month, cur_Year):
         #Changing the Background Color
         "backgroundColorStyle":{
             #168, 143, 50 Color Cream
-            "red" : 168 / 255,
-            "green" : 143 / 255,
-            "blue" : 50 / 255
+            "red" : 168 ,
+            "green" : 143 ,
+            "blue" : 50
         },
 
         #Changing the Text
@@ -59,9 +59,15 @@ def New_Month(cur_Month, cur_Year):
     })
 
     worksheet.format("A3:C3", {
-
+        "backgroundColorStyle":{
+            #168, 143, 50 Color Cream
+            "red" : 168 ,
+            "green" : 143 ,
+            "blue" : 50 
+        },
     })
 
+New_Month("Oct", "2022")
 
 Print_CSV(csv_dest_dir, "stmt.csv")
 #CSV_Edit(csv_dest_dir, "stmt.csv", bank_header_list)

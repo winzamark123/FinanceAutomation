@@ -56,6 +56,7 @@ def Scan_Files(source_dir, file_type):
     #returns an array of file names
     return names_array
 
+#printing the CSV file onto terminal 
 def Print_CSV(source_dir, file_name):
     path = source_dir + "/" + file_name
     pd.set_option("display.max_columns",4)
@@ -64,6 +65,16 @@ def Print_CSV(source_dir, file_name):
     
 
     print(df)
+
+#returning the CSV file 
+def Return_CSV(source_dir, file_name):
+    path = source_dir + "/" + file_name
+    pd.set_option("display.max_columns",4)
+    #reads csv
+    df = pd.read_csv(path)
+    df = df.fillna("")
+    
+    return df
 
 #Edits CSV depending on header_type
 #CURRENTLY SPECIFIC TO BANKSTMT

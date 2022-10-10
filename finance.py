@@ -2,10 +2,13 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
 from convert_pdf import *
+from gspread_formatting import *
 
+#Header Lists
 bank_header_list = ["Transaction Date", "Description", "Amount", "Running Bal"]
 tuition_header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
 rent_header_list = ["Date", "Amount"]
+
 
 def Connect_to_GSpread():
     #Connecting to Google Sheets
@@ -21,53 +24,41 @@ def Connect_to_GSpread():
     #------------------------------------------
 
     # Open the spreadsheet
-    ss = client.open("Personal Finance")
-    ws = ss.worksheet('Sheet1') 
+    sh = client.open("Personal Finance")
+    ws = sh.worksheet('Sheet1') 
     val = ws.acell('B2').value
     
-    return ss
+    return sh
     #print(val)
 
 #Creates a new worksheet with each Month
-def New_Month(cur_Month, cur_Year):
-    ss = Connect_to_GSpread()
-    worksheet = ss.add_worksheet(title= cur_Month + "-" + cur_Year, rows = 50, cols = 50)
+def Format_CSV(cur_Month, cur_Year):
+    sh = Connect_to_GSpread()
+    worksheet = sh.worksheet(cur_Month + cur_Year)
+
+#=======================================================
+#Fomatting Col / Row Sizes
+    set_column_width(worksheet, 'A', 100)
+    set_column_width(worksheet, 'B', 300)
+#=======================================================
+#Setting up the Text Format 
+
+
+    worksheet.update('A1', 'Month')
+
+#Updating the information stored in PD into Gspread
+def Update_PD_Worksheet(cur_Month, cur_Year):
+    sh = Connect_to_GSpread()
+    worksheet = sh.add_worksheet(cur_Month + cur_Year, rows = 50, cols = 50)
     
-    #Changing the Text Type
-    worksheet.format("A1:L4",{
-        #Changing the Text
-        "textFormat": {
-            "fontFamily" : "Georgia",
-            "fontSize" : 10,
-        }
-    })
+#=======================================================
+#Setting up the Information Template
+    df = Return_CSV(csv_dest_dir, "stmt.csv")
+    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
     
-    worksheet.format("A1", {
-        
-        #Changing the Background Color
-        "backgroundColorStyle":{
-            #168, 143, 50 Color Cream
-            "red" : 168 ,
-            "green" : 143 ,
-            "blue" : 50
-        },
-
-        #Changing the Text
-        "textFormat": {
-            "bold" : True
-        }
-    })
-
-    worksheet.format("A3:C3", {
-        "backgroundColorStyle":{
-            #168, 143, 50 Color Cream
-            "red" : 168 ,
-            "green" : 143 ,
-            "blue" : 50 
-        },
-    })
-
-New_Month("Oct", "2022")
 
 Print_CSV(csv_dest_dir, "stmt.csv")
+
+Update_PD_Worksheet("Oct", "2022")
+Format_CSV("Oct", "2022")
 #CSV_Edit(csv_dest_dir, "stmt.csv", bank_header_list)

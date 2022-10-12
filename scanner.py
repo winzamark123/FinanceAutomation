@@ -1,16 +1,16 @@
 import shutil
 import os 
 import csv
+from time import strftime
 import pandas as pd
+import datetime
+import pathlib
 
 #Starting Directories
-main_source_dir = "/Users/wincheng/Desktop/Finance_INFO/"
-tuition_dir = "/Users/wincheng/Desktop/Finance_INFO/Tuition"
-rent_dir= "/Users/wincheng/Desktop/Finance_INFO/Rent"
 bank_statement_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement"
 
 #Destination Directory (This Folder)
-dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/"
+dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation"
 
 #copies the file within the directory to another dir
 def Copy_Files(source_dir, file_name, dest_dir):
@@ -87,27 +87,45 @@ def CSV_Edit(source_dir, file_name, header_list):
 
     #edits csv, inputting the header
     df.to_csv(path, header=header_list, index=False)
+
+def Get_Date(source_dir, file_name):
+    f_name = pathlib.Path(source_dir + file_name)
+
+    # get modification time
+    m_timestamp = f_name.stat().st_mtime
+
+    m_time = datetime.datetime.fromtimestamp(m_timestamp)
+    
+    new_time = m_time.strftime("%m/%d/%Y")
+
+    print("Time file was modified: " + new_time)
+    return new_time
+
+
+
+
+
+
 #============================================================
 #Starting Hash
 print("Using Scanner.py!")
 print("")
 hash = {}
 
+file_date = Get_Date("/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/", "stmt.csv")
+
+print(file_date)
 #using Scan_Files runs through the main directory (Finance_INFO)
-obj = os.scandir(main_source_dir)
+# obj = os.scandir(bank_statement_dir)
 
-with os.scandir(main_source_dir) as itr:
+# with os.scandir(bank_statement_dir) as itr:
 
-    for entry in itr :
-        if entry.name.startswith("."):
-            continue
+#     for entry in itr :
+#         if entry.name.startswith("."):
+#             continue
+        
+#         #dir includes: Tuition / Rent / Bank 
+#         new_file_name = Get_Date(bank_statement_dir, entry) 
 
-        #dir includes: Tuition / Rent / Bank 
-        dir_name = main_source_dir + entry.name
-
-        #using hash to store every pdf files in each dir 
-        #KEY: dir_name
-        #VALUE: array of filenames
-        hash[dir_name] = Scan_Files(dir_name, ".pdf")
          
     #print(hash)

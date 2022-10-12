@@ -6,8 +6,6 @@ from gspread_formatting import *
 
 #Header Lists
 bank_header_list = ["Transaction Date", "Description", "Amount", "Running Bal"]
-tuition_header_list = ["Key", "Date", "Name/Purpose", "Amount", "Extra"]
-rent_header_list = ["Date", "Amount"]
 
 
 def Connect_to_GSpread():
@@ -38,13 +36,22 @@ def Format_CSV(cur_Month, cur_Year):
 
 #=======================================================
 #Fomatting Col / Row Sizes
-    set_column_width(worksheet, 'A', 100)
-    set_column_width(worksheet, 'B', 300)
+    set_column_width(worksheet, 'A', 130)
+    set_column_width(worksheet, 'B', 700)
 #=======================================================
 #Setting up the Text Format 
+    # worksheet.format("A1:D1", {
+    #     "bold" : True
 
+    # })
 
-    worksheet.update('A1', 'Month')
+    fmt = CellFormat(
+        #Bright Orange 255, 172, 28
+        backgroundColor=color(1, 0.67, 0.11),
+        textFormat=TextFormat(bold = True)
+    )
+
+    format_cell_range(worksheet, "A1:D1", fmt)
 
 #Updating the information stored in PD into Gspread
 def Update_PD_Worksheet(cur_Month, cur_Year):
@@ -59,6 +66,6 @@ def Update_PD_Worksheet(cur_Month, cur_Year):
 
 Print_CSV(csv_dest_dir, "stmt.csv")
 
-Update_PD_Worksheet("Oct", "2022")
-Format_CSV("Oct", "2022")
+Update_PD_Worksheet("Sep", "2022")
+Format_CSV("Sep", "2022")
 #CSV_Edit(csv_dest_dir, "stmt.csv", bank_header_list)

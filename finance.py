@@ -64,13 +64,37 @@ def Update_PD_Worksheet(file_name):
     df = Return_CSV(dest_dir, file_name)
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
     
-#def New_CSV():
+def Title_Worksheet_List():
+    title_list = []
+    sh = Connect_to_GSpread()
+    worksheet_list = sh.worksheets()
 
+    for ws in worksheet_list:
+        title_list.append(ws.title)
 
+    return title_list
 
+def Common_Sheet(worksheet_list, file_list):
+    i = 0
+    while i < len(worksheet_list):
+        j = 0
+        while j < len(file_list):
+            if file_list[j] == worksheet_list[i]:
+                file_list.remove(file_list[j])
+            j = j + 1
+        
+        i = i + 1
 
-Print_CSV(dest_dir, file_list[0])
+    return file_list
 
-Update_PD_Worksheet(file_list[0])
-Format_CSV(file_list[0])
+var1 = Title_Worksheet_List()
+print(file_list)
+print(var1)
+test = Common_Sheet(var1, file_list)
+print(test)
+
+#Print_CSV(dest_dir, file_list[0])
+
+#Update_PD_Worksheet(file_list[0])
+#Format_CSV(file_list[0])
 #CSV_Edit(dest, "stmt.csv", bank_header_list)

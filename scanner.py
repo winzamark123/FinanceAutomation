@@ -7,10 +7,10 @@ import datetime
 import pathlib
 
 #Starting Directories
-bank_statement_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement"
+bank_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/"
 
 #Destination Directory (This Folder)
-dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation"
+dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/"
 
 #copies the file within the directory to another dir
 def Copy_Files(source_dir, file_name, dest_dir):
@@ -88,33 +88,67 @@ def CSV_Edit(source_dir, file_name, header_list):
     #edits csv, inputting the header
     df.to_csv(path, header=header_list, index=False)
 
-def Get_Date(source_dir, file_name):
-    f_name = pathlib.Path(source_dir + file_name)
+#Get the date of each files in the file list 
+def Get_Date(source_dir, file_list):
 
-    # get modification time
-    m_timestamp = f_name.stat().st_mtime
+   
 
-    m_time = datetime.datetime.fromtimestamp(m_timestamp)
+    i = 0
+    sizeofList = len(file_list)
+
+    f_name = [None] * sizeofList
+    new_time = [None] * sizeofList
+
+    while i < sizeofList:
+        f_name[i] = pathlib.Path(source_dir + file_list[i])
+
+        # get modification time
+        m_timestamp = f_name[i].stat().st_mtime
+
+        m_time = datetime.datetime.fromtimestamp(m_timestamp)
+        
+        new_time[i] = m_time.strftime("%m/%d/%Y")
+
+        print("Time file was modified: " + new_time[i])
+        i = i + 1
     
-    new_time = m_time.strftime("%m/%d/%Y")
-
-    print("Time file was modified: " + new_time)
     return new_time
 
+#Move the File into FinanceAutomation Dir
+def Move_Files(source_dir, file_list, file_date, dest_dir):
+    
+    i = 0
+    while i < len(file_date):
 
+        files_exist = os.path.exists(dest_dir + file_list[i])
 
+        #if the file is already in the folder 
+        if files_exist:
+            print("The file is already in the folder")
+            return
 
+        #updates the src_path with the folder's name + the file name
+        src_path = source_dir + file_date[i]
+
+        shutil.move(src_path, dest_dir)
 
 
 #============================================================
 #Starting Hash
 print("Using Scanner.py!")
 print("")
-hash = {}
 
-file_date = Get_Date("/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/", "stmt.csv")
+
+file_list = Scan_Files(bank_dir, ".csv")
+print(file_list)
+
+file_date = Get_Date(bank_dir, file_list)
 
 print(file_date)
+
+#Move_Files(bank_dir, file_list, file_date, dest_dir)
+
+
 #using Scan_Files runs through the main directory (Finance_INFO)
 # obj = os.scandir(bank_statement_dir)
 

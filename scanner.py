@@ -10,7 +10,7 @@ import pathlib
 bank_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/"
 
 #Destination Directory (This Folder)
-dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/"
+dest_dir = "/Users/wincheng/Desktop/VSCoding/FinanceAutomation/BankingCSV/"
 
 #copies the file within the directory to another dir
 def Copy_Files(source_dir, file_name, dest_dir):
@@ -18,10 +18,10 @@ def Copy_Files(source_dir, file_name, dest_dir):
     # --> /home/Doc/Sample(copy).txt
 
     #Current file path
-    cur_path = source_dir + "/" + file_name
+    cur_path = source_dir + file_name
 
     #final path of the file edit
-    final_path = dest_dir + "/" + file_name + "(copied_by_python).pdf"
+    final_path = dest_dir + file_name 
 
     #print(cur_path, final_path)
 
@@ -68,7 +68,7 @@ def Print_CSV(source_dir, file_name):
 
 #returning the CSV file 
 def Return_CSV(source_dir, file_name):
-    path = source_dir + "/" + file_name
+    path = source_dir + file_name
     pd.set_option("display.max_columns",4)
     #reads csv
     df = pd.read_csv(path)
@@ -115,22 +115,19 @@ def Get_Date(source_dir, file_list):
     return new_time
 
 #Move the File into FinanceAutomation Dir
-def Move_Files(source_dir, file_list, file_date, dest_dir):
+def Move_Files(source_dir, file_name, dest_dir):
     
-    i = 0
-    while i < len(file_date):
+    files_exist = os.path.exists(dest_dir + file_name)
 
-        files_exist = os.path.exists(dest_dir + file_list[i])
+    #if the file is already in the folder 
+    if files_exist:
+        print("The file is already in the folder")
+        return
 
-        #if the file is already in the folder 
-        if files_exist:
-            print("The file is already in the folder")
-            return
+    #updates the src_path with the folder's name + the file name
+    src_path = source_dir + file_name
 
-        #updates the src_path with the folder's name + the file name
-        src_path = source_dir + file_date[i]
-
-        shutil.move(src_path, dest_dir)
+    shutil.move(src_path, dest_dir)
 
 
 #============================================================
@@ -140,26 +137,8 @@ print("")
 
 
 file_list = Scan_Files(bank_dir, ".csv")
-print(file_list)
+i = 0
 
-file_date = Get_Date(bank_dir, file_list)
-
-print(file_date)
-
-#Move_Files(bank_dir, file_list, file_date, dest_dir)
-
-
-#using Scan_Files runs through the main directory (Finance_INFO)
-# obj = os.scandir(bank_statement_dir)
-
-# with os.scandir(bank_statement_dir) as itr:
-
-#     for entry in itr :
-#         if entry.name.startswith("."):
-#             continue
-        
-#         #dir includes: Tuition / Rent / Bank 
-#         new_file_name = Get_Date(bank_statement_dir, entry) 
-
-         
-    #print(hash)
+while i < len(file_list): 
+    Copy_Files(bank_dir, file_list[i], dest_dir)
+    i = i + 1

@@ -1,7 +1,6 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
-from convert_pdf import *
 from gspread_formatting import *
 
 #Header Lists
@@ -30,14 +29,16 @@ def Connect_to_GSpread():
     #print(val)
 
 #Creates a new worksheet with each Month
-def Format_CSV(cur_Month, cur_Year):
+def Format_CSV(file_name):
     sh = Connect_to_GSpread()
-    worksheet = sh.worksheet(cur_Month + cur_Year)
+    worksheet = sh.worksheet(file_name)
 
 #=======================================================
 #Fomatting Col / Row Sizes
-    set_column_width(worksheet, 'A', 130)
-    set_column_width(worksheet, 'B', 700)
+    set_column_width(worksheet, 'A', 100)
+    set_column_width(worksheet, 'B', 300)
+    set_column_width(worksheet, 'C', 600)
+    set_column_width(worksheet, 'D', 500)
 #=======================================================
 #Setting up the Text Format 
     # worksheet.format("A1:D1", {
@@ -54,18 +55,22 @@ def Format_CSV(cur_Month, cur_Year):
     format_cell_range(worksheet, "A1:D1", fmt)
 
 #Updating the information stored in PD into Gspread
-def Update_PD_Worksheet(cur_Month, cur_Year):
+def Update_PD_Worksheet(file_name):
     sh = Connect_to_GSpread()
-    worksheet = sh.add_worksheet(cur_Month + cur_Year, rows = 50, cols = 50)
+    worksheet = sh.add_worksheet(file_name, rows = 50, cols = 50)
     
 #=======================================================
 #Setting up the Information Template
-    df = Return_CSV(csv_dest_dir, "stmt.csv")
+    df = Return_CSV(dest_dir, file_name)
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
     
+#def New_CSV():
 
-Print_CSV(csv_dest_dir, "stmt.csv")
 
-Update_PD_Worksheet("Sep", "2022")
-Format_CSV("Sep", "2022")
-#CSV_Edit(csv_dest_dir, "stmt.csv", bank_header_list)
+
+
+Print_CSV(dest_dir, file_list[0])
+
+Update_PD_Worksheet(file_list[0])
+Format_CSV(file_list[0])
+#CSV_Edit(dest, "stmt.csv", bank_header_list)

@@ -29,16 +29,16 @@ def Connect_to_GSpread():
     #print(val)
 
 #Creates a new worksheet with each Month
-def Format_CSV(file_name):
+def Format_Gspread(file_name):
     sh = Connect_to_GSpread()
     worksheet = sh.worksheet(file_name)
 
 #=======================================================
 #Fomatting Col / Row Sizes
     set_column_width(worksheet, 'A', 100)
-    set_column_width(worksheet, 'B', 300)
-    set_column_width(worksheet, 'C', 600)
-    set_column_width(worksheet, 'D', 500)
+    set_column_width(worksheet, 'B', 200)
+    set_column_width(worksheet, 'C', 400)
+    set_column_width(worksheet, 'D', 300)
 #=======================================================
 #Setting up the Text Format 
     # worksheet.format("A1:D1", {
@@ -52,14 +52,13 @@ def Format_CSV(file_name):
         textFormat=TextFormat(bold = True)
     )
 
-    format_cell_range(worksheet, "A1:D1", fmt)
+    format_cell_range(worksheet, "A1:E1", fmt)
 
 #Updating the information stored in PD into Gspread
 def Update_PD_Worksheet(file_name):
     sh = Connect_to_GSpread()
     worksheet = sh.add_worksheet(file_name, rows = 50, cols = 50)
     
-#=======================================================
 #Setting up the Information Template
     df = Return_CSV(dest_dir, file_name)
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
@@ -87,14 +86,18 @@ def Common_Sheet(worksheet_list, file_list):
 
     return file_list
 
-var1 = Title_Worksheet_List()
+#=======================================================
+raw_worksheet = Title_Worksheet_List()
 print(file_list)
-print(var1)
-test = Common_Sheet(var1, file_list)
-print(test)
+print(raw_worksheet)
+final_list = Common_Sheet(raw_worksheet, file_list)
+print(final_list)
 
-#Print_CSV(dest_dir, file_list[0])
+i = 0
 
-#Update_PD_Worksheet(file_list[0])
-#Format_CSV(file_list[0])
-#CSV_Edit(dest, "stmt.csv", bank_header_list)
+while i < len(final_list):
+    Update_PD_Worksheet(final_list[i])
+    Format_Gspread(final_list[i])
+    i = i + 1 
+
+

@@ -131,7 +131,7 @@ def Move_Files(source_dir, file_name, dest_dir):
 
 
 #============================================================
-#Starting Hash
+
 print("Using Scanner.py!")
 print("")
 

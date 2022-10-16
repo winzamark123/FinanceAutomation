@@ -95,9 +95,9 @@ print(final_list)
 
 i = 0
 
-while i < len(final_list):
-    Update_PD_Worksheet(final_list[i])
-    Format_Gspread(final_list[i])
-    i = i + 1 
+# while i < len(final_list):
+#     Update_PD_Worksheet(final_list[i])
+#     Format_Gspread(final_list[i])
+#     i = i + 1 
 
 

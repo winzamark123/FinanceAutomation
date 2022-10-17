@@ -23,7 +23,20 @@ def Type_of_Transac(file_list):
 
     Type_Col = data["Payee"]
 
+    #Types Include:
+        # - UCD : UC Davis
+        # - AMZN: Amazon : Shopping
+        # - DD:Door Dash : Food
+        # - LA Creperie : Food
+        # - WALMART : Walmart : Food
+
     #for type in Type_Col:
+def Type_Spent(file_list):
+    type_spent = 0
+
+def Perc_Type_Spent(file_list):
+    perc = 0
+
 
 
 

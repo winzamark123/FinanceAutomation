@@ -129,7 +129,16 @@ def Move_Files(source_dir, file_name, dest_dir):
 
     shutil.move(src_path, dest_dir)
 
+#Checks the size of the CSV (the # of rows)
+def Check_Size(source_dir, file_name):
+    row_num = 0
+    with open(source_dir + file_name) as file_obj:
+        reader_obj = csv.reader(file_obj)
 
+        for row in reader_obj:
+           row_num = row_num + 1
+
+    return row_num 
 #============================================================
 
 print("Using Scanner.py!")

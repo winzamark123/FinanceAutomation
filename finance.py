@@ -1,18 +1,25 @@
+from urllib import request
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from scanner import *
-from pprint import pprint
 from gspread_formatting import *
 from googleapiclient import discovery
+from Google import *
 
 #Header Lists
 bank_header_list = ["Transaction Date", "Description", "Amount", "Running Bal"]
 
 #defining the scope of the application
-scope_app =['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive'] 
+scope_app = ["https://www.googleapis.com/auth/spreadsheets"] 
 
 #credentials to the account
-cred = ServiceAccountCredentials.from_json_keyfile_name('win_finance_credentials.json',scope_app) 
+cred = ServiceAccountCredentials.from_json_keyfile_name("win_finance_credentials.json",scope_app) 
+
+#secret JSON File
+secret_file = "win_OAuth.json"
+
+#spreadsheet_id
+spreadsheet_id = "1Ok7bCIplJnvrLn8ltPFJrG9YxOpbeTvQzVrXoEsWPI4"
 
 # authorize the clientsheet 
 client = gspread.authorize(cred)
@@ -21,10 +28,10 @@ def Connect_to_GSpread():
     #Connecting to Google Sheets
     #------------------------------------------
     # defining the scope of the application
-    scope_app =['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive'] 
+    scope_app =["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"] 
 
     #credentials to the account
-    cred = ServiceAccountCredentials.from_json_keyfile_name('win_finance_credentials.json',scope_app) 
+    cred = ServiceAccountCredentials.from_json_keyfile_name("win_finance_credentials.json",scope_app) 
 
     # authorize the clientsheet 
     client = gspread.authorize(cred)
@@ -32,11 +39,11 @@ def Connect_to_GSpread():
 
     # Open the spreadsheet
     sh = client.open("Personal Finance")
-    ws = sh.worksheet('Sheet1') 
-    val = ws.acell('B2').value
+    ws = sh.worksheet("Sheet1") 
+    val = ws.acell("B2").value
     
     return sh
-    #print(val)
+
 
 #Creates a new worksheet with each Month
 def Format_Gspread(file_name):
@@ -45,10 +52,10 @@ def Format_Gspread(file_name):
 
 #=======================================================
 #Fomatting Col / Row Sizes
-    set_column_width(worksheet, 'A', 100)
-    set_column_width(worksheet, 'B', 200)
-    set_column_width(worksheet, 'C', 400)
-    set_column_width(worksheet, 'D', 300)
+    set_column_width(worksheet, "A", 100)
+    set_column_width(worksheet, "B", 200)
+    set_column_width(worksheet, "C", 400)
+    set_column_width(worksheet, "D", 300)
 #=======================================================
 #Setting up the Text Format 
     # worksheet.format("A1:D1", {
@@ -99,68 +106,74 @@ def Common_Sheet(worksheet_list, file_list):
     return file_list
 
 #Creates a pie chart based on spending type
-def Pie_Chart(file_list):
-    sh_id = Connect_to_GSpread()
-    service = discovery.build('sheets', 'v4', cred)
+def Pie_Chart(file_name, row_num):
+    sourceSheet_id = "1113555184"
+    sheet_ID = "1676022265"
+    API_NAME = "sheets"
+    API_VERS = "v4"
+    service = Create_Service(secret_file, API_NAME, API_VERS, scope_app)
 
-    batch_update_spreadsheet_request_body = {
-
-
-        'requests':[  {
-      "addChart": {
-        "chart": {
-          "spec": {
-            "title": "Model Q1 Total Sales",
-            "pieChart": {
-              "legendPosition": "RIGHT_LEGEND",
-              "threeDimensional": True,
-              "domain": {
-                "sourceRange": {
-                  "sources": [
-                    {
-                      "sheetId": sh_id,
-                      "startRowIndex": 0,
-                      "endRowIndex": 7,
-                      "startColumnIndex": 0,
-                      "endColumnIndex": 1
+    request_body = {
+      "requests" : [
+        {
+          "addChart":{
+            "chart":{
+              "spec":{
+                "title" : "Spending Types",
+                "pieChart": {
+                  "legendPosition" : "BOTTOM_LEGEND",
+                  "threeDimensional" : True,
+                  "domain" : {
+                    "sourceRange" : {
+                      "sources" : [
+                        {
+                          "sheetId": sourceSheet_id,
+                          "startRowIndex" : 0,
+                          "endRowIndex" : 7,
+                          "startColumnIndex" : 0,
+                          "endColumnIndex" : 1
+                        }
+                      ]
                     }
-                  ]
+                  },
+                  "series" : {
+                    "sourceRange" : {
+                      "sources" : [
+                        {
+                        "sheetId" : sourceSheet_id,
+                        "startRowIndex" : 0,
+                        "endRowIndex" : 7,
+                        "startColumnIndex" : 4,
+                        "endColumnIndex" : 5
+                        }
+                      ]
+                    }
+                  },
                 }
               },
-              "series": {
-                "sourceRange": {
-                  "sources": [
-                    {
-                      "sheetId": sh_id,
-                      "startRowIndex": 0,
-                      "endRowIndex": 7,
-                      "startColumnIndex": 4,
-                      "endColumnIndex": 5
-                    }
-                  ]
+              "position" : {
+                "overlayPosition": {
+                  "anchorCell": {
+                    "sheetId": sheet_ID,
+                    "rowIndex": 2,
+                    "columnIndex": 2
+                  },
+                  "offsetXPixels": 50,
+                  "offsetYPixels": 50
                 }
-              },
-            }
-          },
-          "position": {
-            "overlayPosition": {
-              "anchorCell": {
-                "sheetId": sh_id,
-                "rowIndex": 2,
-                "columnIndex": 2
-              },
-              "offsetXPixels": 50,
-              "offsetYPixels": 50
+              }
             }
           }
         }
-      }
-    }],
+      ]
     }
-    request = service.spreadsheets().batchUpdate(spreadsheetId=sh_id, body=batch_update_spreadsheet_request_body)
+    request = service.spreadsheets().batchUpdate(
+      spreadsheetId = spreadsheet_id,
+      body = request_body
+    )
     response = request.execute()
 
-    pprint(response)
+    print("Print Chart Successfully!")
 
 
 
@@ -175,7 +188,7 @@ print(final_list)
 
 i = 0
 
-Pie_Chart(file_list)
+Pie_Chart(file_list, 53)
 
 # while i < len(final_list):
 #     Update_PD_Worksheet(final_list[i])

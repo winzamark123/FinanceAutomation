@@ -188,8 +188,9 @@ print(final_list)
 
 i = 0
 
-Pie_Chart(file_list, 53)
+#Pie_Chart(file_list, 53)
 
+#Start Updating All the CSV Files onto GSpread
 # while i < len(final_list):
 #     Update_PD_Worksheet(final_list[i])
 #     Format_Gspread(final_list[i])

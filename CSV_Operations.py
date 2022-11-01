@@ -26,58 +26,95 @@ def Type_of_Transac(file_list):
         # - LA Creperie : Food
         # - WALMART : Walmart : Food
 
-    Food = 0
+
+    Groceries = 0
+    Groceries_Amount = 0
+
+    Fast_Food = 0
+    Fast_Food_Amount = 0
+    
     School = 0
+    School_Fees = 0
+
     Online_Orders = 0
+    Online_Orders_Amount = 0
+
     Others = 0
+    Others_Amount = 0
 
 
     df = Return_CSV(source_dir, file_list[0])
 
 
-    Type_Col = df[["Payee"]]
-    Type_Col = Type_Col.astype(str)
-    #print(Type_Col.values)
-
     #Checking Each Category and Adding it to the Type
     #===================================================================
-    
-    #Foods
     x = 0
-    row = len(df)
 
-    for x in range(len(df)):
-        if list(map(lambda x: x.startswith("DOORDASH") or x.startswith("DD"), df["Payee"])):
-            Food = Food + 1
-        if list(map(lambda x: x.startswith("WALMART"), df["Payee"])):
-            Food = Food + 1
+    #Iterate over all the rows on CSV
+    for x, row in df.iterrows():
 
-        if list(map(lambda x: x.startswith("UCD"), df["Payee"])):
-            School = School + 1
+        #if Category starts with DoorDash / DD = Fast_Food is added
+        if df.loc[x, "Payee"].startswith("DOORDASH") or df.loc[x, "Payee"].startswith("DD"):
+            Fast_Food = Fast_Food + 1
+            Fast_Food_Amount = Fast_Food_Amount + df.loc[x, "Amount"]
+            continue
 
-        if list(map(lambda x: x.startswith("AMZN"), df["Payee"])):
+        #Fast Food
+        if df.loc[x, "Payee"].startswith("RAISING") or df.loc[x, "Payee"].startswith("IN N OUT") or df.loc[x, "Payee"].startswith("BASKIN") or df.loc[x, "Payee"].startswith("SHELL"):
+            Fast_Food = Fast_Food + 1
+            Fast_Food_Amount = Fast_Food_Amount + df.loc[x, "Amount"]
+            continue
+
+        #Walmart and Savemart
+        if df.loc[x, "Payee"].startswith("WALMART") or df.loc[x, "Payee"].startswith("SAVEMART"):
+            Groceries = Groceries + 1
+            Groceries_Amount = Groceries_Amount + df.loc[x, "Amount"]
+            continue
+
+        #Online Orders
+        if df.loc[x, "Payee"].startswith("AMAZON") or df.loc[x, "Payee"].startswith("AMZN") or df.loc[x, "Payee"].startswith("eBay"):
             Online_Orders = Online_Orders + 1
+            Online_Orders_Amount = Online_Orders_Amount + df.loc[x, "Amount"]
+            continue
+
+        #School
+        if df.loc[x, "Payee"].startswith("CHEGG") or df.loc[x, "Payee"].startswith("UCD"):
+            School = School + 1
+            School_Fees = School_Fees + df.loc[x, "Amount"]
+            continue
+
+       
+
+        #Others 
+        Others = Others + 1
+        Others_Amount = Others_Amount + df.loc[x, "Amount"]
     
 
-    print("Food:")
-    print(Food)
+    print("Fast Food:", Fast_Food)
+    print("Fast Food Amount:", Fast_Food_Amount)
 
-    #Printing DF to Check 
-    pd.set_option("display.max_columns",6)
-    print(df)
+    print("Online Orders", Online_Orders)
+    print("Online Orders Amount:", Online_Orders_Amount)
 
+    print("School", School)
+    print("School Fees:", School_Fees)
 
-    #df['student_id_starts_with_TCS'] = list(
-    #map(lambda x: x.startswith('TCS'), df['Student_id'])) 
+    print("Others", Others)
+    print("Others Amount:", Others_Amount)
 
-def Type_Spent(file_list):
-    type_spent = 0
+#Removing the Rows where Payment is done
+def Remove_Payment(file_list):
+    df = Return_CSV(source_dir, file_list[0])
+
+    for x, row in df.iterrows():
+        if df.loc[x, "Amount"] > 0:
+            df.drop(df.index[x])
 
 def Perc_Type_Spent(file_list):
     perc = 0
 
 
 
-
+Remove_Payment(file_list)
 Calculate_Sum(file_list)
 Type_of_Transac(file_list)

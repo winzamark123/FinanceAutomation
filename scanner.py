@@ -139,7 +139,20 @@ def Check_Size(source_dir, file_name):
            row_num = row_num + 1
 
     return row_num 
+
+def Run_Scanner():
+    print("Using Scanner.py!")
+    print("")
+
+
+    file_list = Scan_Files(bank_dir, ".csv")
+    i = 0
+
+    while i < len(file_list): 
+        Copy_Files(bank_dir, file_list[i], dest_dir)
+        i = i + 1
 #============================================================
+
 
 print("Using Scanner.py!")
 print("")

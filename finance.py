@@ -74,13 +74,14 @@ def Format_Gspread(file_name):
     format_cell_range(worksheet, "A1:E1", fmt)
 
 #Updating the information stored in PD into Gspread
-def Update_PD_Worksheet(file_list):
-    from CSV_Operations import Remove_Payment
+def Update_PD_Worksheet(file_name):
+    from CSV_Operations import Update_Last_Row_CSV
     sh = Connect_to_GSpread()
-    worksheet = sh.add_worksheet(file_list[0], rows = 50, cols = 50)
+    worksheet = sh.add_worksheet(file_name, rows = 60, cols = 60)
     
 #Setting up the Information Template
-    df = Remove_Payment(file_list)
+    df = Update_Last_Row_CSV(file_name)
+    df = df.fillna('')
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 #Gets the title of each worksheet from GSpread 
@@ -186,19 +187,20 @@ def Final_List():
   print(file_list)
   print(raw_worksheet)
   final_list = Common_Sheet(raw_worksheet, file_list)
-  print(final_list)
 
+  return final_list
+
+def Run_Finance():
+  final_list = Final_List()
+  i = 0
+
+  #Pie_Chart(file_list, 53)
+
+  #Start Updating All the CSV Files onto GSpread
+  while i < len(final_list):
+      Update_PD_Worksheet(final_list[i])
+      Format_Gspread(final_list[i])
+      i = i + 1 
 #=======================================================
 
-final_list = Final_List()
-i = 0
-
-#Pie_Chart(file_list, 53)
-
-#Start Updating All the CSV Files onto GSpread
-# while i < len(final_list):
-#     Update_PD_Worksheet(final_list[i])
-#     Format_Gspread(final_list[i])
-#     i = i + 1 
-
-
+Run_Finance()

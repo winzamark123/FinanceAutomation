@@ -6,8 +6,8 @@ from gspread_formatting import *
 source_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/"
 
 #Calculate the total Amount of Transaction
-def Calculate_Sum(file_list):
-    df = Remove_Payment(file_list)
+def Calculate_Sum(file_name):
+    df = Remove_Payment(file_name)
     sum = 0
 
     Amount_Col = df["Amount"] 
@@ -19,7 +19,7 @@ def Calculate_Sum(file_list):
     return sum
 
 #Determine the Type of Transaction 
-def Type_of_Transac(file_list):
+def Type_of_Transac(file_name):
      #Types Include:
         # - UCD : UC Davis
         # - AMZN: Amazon : Shopping
@@ -44,7 +44,7 @@ def Type_of_Transac(file_list):
     Others_Amount = 0
 
 
-    df = Remove_Payment(file_list)
+    df = Remove_Payment(file_name)
 
 
     #Checking Each Category and Adding it to the Type
@@ -105,13 +105,13 @@ def Type_of_Transac(file_list):
     print("Others", Others)
     print("Others Amount:", Others_Amount)
 
-    return Groceries_Amount, Fast_Food_Amount, Online_Orders_Amount, School_Fees, Others_Amount
+    Array_Amount = [Groceries_Amount, Fast_Food_Amount, Online_Orders_Amount, School_Fees, Others_Amount]
+    
+    return Array_Amount
 
 #Removing the Rows where Payment is done
-def Remove_Payment(file_list):
-    from finance import Final_List
-
-    df = Return_CSV(source_dir, file_list[0])
+def Remove_Payment(file_name):
+    df = Return_CSV(source_dir, file_name)
     
     for x, row in df.iterrows():
         if df.loc[x, "Amount"] > 0:
@@ -119,12 +119,25 @@ def Remove_Payment(file_list):
     
     return df
 
+#Updates the Last Row of CSV with the Values of Types of Payment
+def Update_Last_Row_CSV(file_name):
+    df = Remove_Payment(file_name)
+    Array_Amount = Type_of_Transac(file_name)
+
+    df.loc[-1, ["Posted Date", "Reference Number","Payee", "Address", "Amount"]] \
+        = ["Total Groceries:" + str(Array_Amount[0]), "Total Fast Food:" + str(Array_Amount[1]) \
+            ,"Total Online Orders:" + str(Array_Amount[2]), "Total School Fees:" + str(Array_Amount[3]), "Total Others:" + str(Array_Amount[4])]
+    
+    pd.set_option("display.max_columns",6)
+    
+    return df
 
 def Perc_Type_Spent(file_list):
     perc = 0
 
+#================================================================
 
-
-Remove_Payment(file_list)
-Calculate_Sum(file_list)
-Type_of_Transac(file_list)
+# Remove_Payment(file_list)
+# Calculate_Sum(file_list)
+# Type_of_Transac(file_list)
+#Update_Last_Row_CSV(file_list)

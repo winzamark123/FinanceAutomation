@@ -1,13 +1,13 @@
 from typing import Type
-from finance import *
 from scanner import *
 from gspread_formatting import *
+
 
 source_dir = "/Users/wincheng/Desktop/Finance_INFO/Bank_Statement/"
 
 #Calculate the total Amount of Transaction
 def Calculate_Sum(file_list):
-    df = Return_CSV(source_dir, file_list[0])
+    df = Remove_Payment(file_list)
     sum = 0
 
     Amount_Col = df["Amount"] 
@@ -16,6 +16,7 @@ def Calculate_Sum(file_list):
         sum = sum + amount
     
     print(sum)
+    return sum
 
 #Determine the Type of Transaction 
 def Type_of_Transac(file_list):
@@ -43,7 +44,7 @@ def Type_of_Transac(file_list):
     Others_Amount = 0
 
 
-    df = Return_CSV(source_dir, file_list[0])
+    df = Remove_Payment(file_list)
 
 
     #Checking Each Category and Adding it to the Type
@@ -89,6 +90,8 @@ def Type_of_Transac(file_list):
         Others = Others + 1
         Others_Amount = Others_Amount + df.loc[x, "Amount"]
     
+    print("Groceries:", Groceries)
+    print("Groceries Amount", Groceries_Amount)
 
     print("Fast Food:", Fast_Food)
     print("Fast Food Amount:", Fast_Food_Amount)
@@ -102,13 +105,20 @@ def Type_of_Transac(file_list):
     print("Others", Others)
     print("Others Amount:", Others_Amount)
 
+    return Groceries_Amount, Fast_Food_Amount, Online_Orders_Amount, School_Fees, Others_Amount
+
 #Removing the Rows where Payment is done
 def Remove_Payment(file_list):
-    df = Return_CSV(source_dir, file_list[0])
+    from finance import Final_List
 
+    df = Return_CSV(source_dir, file_list[0])
+    
     for x, row in df.iterrows():
         if df.loc[x, "Amount"] > 0:
-            df.drop(df.index[x])
+            df.drop(x, inplace=True)
+    
+    return df
+
 
 def Perc_Type_Spent(file_list):
     perc = 0

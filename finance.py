@@ -6,6 +6,8 @@ from gspread_formatting import *
 from googleapiclient import discovery
 from Google import *
 
+
+
 #Header Lists
 bank_header_list = ["Transaction Date", "Description", "Amount", "Running Bal"]
 
@@ -72,12 +74,13 @@ def Format_Gspread(file_name):
     format_cell_range(worksheet, "A1:E1", fmt)
 
 #Updating the information stored in PD into Gspread
-def Update_PD_Worksheet(file_name):
+def Update_PD_Worksheet(file_list):
+    from CSV_Operations import Remove_Payment
     sh = Connect_to_GSpread()
-    worksheet = sh.add_worksheet(file_name, rows = 50, cols = 50)
+    worksheet = sh.add_worksheet(file_list[0], rows = 50, cols = 50)
     
 #Setting up the Information Template
-    df = Return_CSV(dest_dir, file_name)
+    df = Remove_Payment(file_list)
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 #Gets the title of each worksheet from GSpread 
@@ -175,17 +178,19 @@ def Pie_Chart(file_name, row_num):
 
     print("Print Chart Successfully!")
 
+def Adding_Total(file_name):
+  print("In Progress")
 
-
-
+def Final_List():
+  raw_worksheet = Title_Worksheet_List()
+  print(file_list)
+  print(raw_worksheet)
+  final_list = Common_Sheet(raw_worksheet, file_list)
+  print(final_list)
 
 #=======================================================
-raw_worksheet = Title_Worksheet_List()
-print(file_list)
-print(raw_worksheet)
-final_list = Common_Sheet(raw_worksheet, file_list)
-print(final_list)
 
+final_list = Final_List()
 i = 0
 
 #Pie_Chart(file_list, 53)

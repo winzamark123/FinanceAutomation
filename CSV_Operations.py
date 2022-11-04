@@ -105,6 +105,13 @@ def Type_of_Transac(file_name):
     print("Others", Others)
     print("Others Amount:", Others_Amount)
 
+    round(Groceries_Amount, 2)
+    round(Fast_Food_Amount, 2)
+    round(Online_Orders_Amount, 2)
+    round(School_Fees, 2)
+    round(Others_Amount, 2)
+
+
     Array_Amount = [Groceries_Amount, Fast_Food_Amount, Online_Orders_Amount, School_Fees, Others_Amount]
     
     return Array_Amount
@@ -121,23 +128,37 @@ def Remove_Payment(file_name):
 
 #Updates the Last Row of CSV with the Values of Types of Payment
 def Update_Last_Row_CSV(file_name):
-    df = Remove_Payment(file_name)
+    df = Remove_Col(file_name)
     Array_Amount = Type_of_Transac(file_name)
 
-    df.loc[-1, ["Posted Date", "Reference Number","Payee", "Address", "Amount"]] \
-        = ["Total Groceries:" + str(Array_Amount[0]), "Total Fast Food:" + str(Array_Amount[1]) \
-            ,"Total Online Orders:" + str(Array_Amount[2]), "Total School Fees:" + str(Array_Amount[3]), "Total Others:" + str(Array_Amount[4])]
+    # df.loc[-1, ["Posted Date", "Reference Number","Payee", "Address", "Amount"]] \
+    #     = ["Total Groceries:" + str(Array_Amount[0]), "Total Fast Food:" + str(Array_Amount[1]) \
+    #         ,"Total Online Orders:" + str(Array_Amount[2]), "Total School Fees:" + str(Array_Amount[3]), "Total Others:" + str(Array_Amount[4])]
     
+    df.loc[0, ["Total Groceries:", "Total Fast Food:", "Total Online Orders:", \
+        "Total School Fees:", "Total Others:"]] = \
+            [Array_Amount[0], Array_Amount[1], Array_Amount[2], Array_Amount[3], Array_Amount[4]]
+    
+
     pd.set_option("display.max_columns",6)
-    
     return df
 
-def Perc_Type_Spent(file_list):
-    perc = 0
+def Remove_Col(file_name, col_list = ["Reference Number", "Address"]):
+    df = Remove_Payment(file_name)
+    
+    for name in col_list:
+        df.pop(name)
+
+    return df
+
+def Finished_CSV(file_name, col_list):
+    df = Remove_Payment(file_name)
+
 
 #================================================================
 
 # Remove_Payment(file_list)
 # Calculate_Sum(file_list)
 # Type_of_Transac(file_list)
-#Update_Last_Row_CSV(file_list)
+# Update_Last_Row_CSV("October2022_0711.csv")
+#Remove_Col("October2022_0711.csv", ["Reference Number", "Address"])

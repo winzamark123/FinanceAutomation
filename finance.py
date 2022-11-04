@@ -54,10 +54,15 @@ def Format_Gspread(file_name):
 
 #=======================================================
 #Fomatting Col / Row Sizes
-    set_column_width(worksheet, "A", 100)
-    set_column_width(worksheet, "B", 200)
-    set_column_width(worksheet, "C", 400)
-    set_column_width(worksheet, "D", 300)
+    set_column_width(worksheet, "A", 90)
+    set_column_width(worksheet, "B", 300)
+    set_column_width(worksheet, "C", 70)
+    set_column_width(worksheet, "D", 150)
+    set_column_width(worksheet, "E", 150)
+    set_column_width(worksheet, "F", 150)
+    set_column_width(worksheet, "G", 150)
+    set_column_width(worksheet, "H", 150)
+
 #=======================================================
 #Setting up the Text Format 
     # worksheet.format("A1:D1", {
@@ -65,13 +70,23 @@ def Format_Gspread(file_name):
 
     # })
 
+#CSV Colors
     fmt = CellFormat(
         #Bright Orange 255, 172, 28
         backgroundColor=color(1, 0.67, 0.11),
         textFormat=TextFormat(bold = True)
     )
 
-    format_cell_range(worksheet, "A1:E1", fmt)
+    format_cell_range(worksheet, "A1:C1", fmt)
+
+    #Types of Transactions
+    fmt = CellFormat(
+      #Grey 204 204 204
+        backgroundColor=color(0.8, 0.8, 0.8),
+        textFormat=TextFormat(bold = True)
+    )
+
+    format_cell_range(worksheet, "D1:H1", fmt)
 
 #Updating the information stored in PD into Gspread
 def Update_PD_Worksheet(file_name):

@@ -44,8 +44,8 @@ def Connect_to_GSpread():
     ws = sh.worksheet("Sheet1") 
     val = ws.acell("B2").value
     
+    print(sh)
     return sh
-
 
 #Creates a new worksheet with each Month
 def Format_Gspread(file_name):
@@ -124,17 +124,34 @@ def Common_Sheet(worksheet_list, file_list):
 
     return file_list
 
-#Creates a pie chart based on spending type
-def Pie_Chart(file_name, row_num):
-    sourceSheet_id = "1113555184"
-    sheet_ID = "1676022265"
-    API_NAME = "sheets"
-    API_VERS = "v4"
-    service = Create_Service(secret_file, API_NAME, API_VERS, scope_app)
+def Pie_Chart_2():
+    from pprint import pprint
+    from googleapiclient import discovery
 
-    request_body = {
-      "requests" : [
-        {
+    # TODO: Change placeholder below to generate authentication credentials. See
+    # https://developers.google.com/sheets/quickstart/python#step_3_set_up_the_sample
+    #
+    # Authorize using one of the following scopes:
+    #     'https://www.googleapis.com/auth/drive'
+    #     'https://www.googleapis.com/auth/drive.file'
+    #     'https://www.googleapis.com/auth/spreadsheets'
+    credentials = None
+
+    service = discovery.build('sheets', 'v4', credentials=cred)
+
+    # The spreadsheet to apply the updates to.
+    sh_id = "1Ok7bCIplJnvrLn8ltPFJrG9YxOpbeTvQzVrXoEsWPI4"
+    spreadsheet_id = '698839434'  # TODO: Update placeholder value.
+    sheet_ID = "1676022265"
+
+
+
+    batch_update_spreadsheet_request_body = {
+        # A list of updates to apply to the spreadsheet.
+        # Requests will be applied in the order they are specified.
+        # If any request is not valid, no requests will be applied.
+        'requests': [
+          {
           "addChart":{
             "chart":{
               "spec":{
@@ -146,11 +163,11 @@ def Pie_Chart(file_name, row_num):
                     "sourceRange" : {
                       "sources" : [
                         {
-                          "sheetId": sourceSheet_id,
-                          "startRowIndex" : 0,
-                          "endRowIndex" : 7,
-                          "startColumnIndex" : 0,
-                          "endColumnIndex" : 1
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex" : 0, #Row 1
+                          "endRowIndex" : 31, #Row 30
+                          "startColumnIndex" : 3, #Col D
+                          "endColumnIndex" : 4 
                         }
                       ]
                     }
@@ -159,9 +176,9 @@ def Pie_Chart(file_name, row_num):
                     "sourceRange" : {
                       "sources" : [
                         {
-                        "sheetId" : sourceSheet_id,
+                        "sheetId" : spreadsheet_id,
                         "startRowIndex" : 0,
-                        "endRowIndex" : 7,
+                        "endRowIndex" : 1,
                         "startColumnIndex" : 4,
                         "endColumnIndex" : 5
                         }
@@ -184,15 +201,16 @@ def Pie_Chart(file_name, row_num):
             }
           }
         }
-      ]
+        ],  # TODO: Update placeholder value.
+        
+        # TODO: Add desired entries to the request body.
     }
-    request = service.spreadsheets().batchUpdate(
-      spreadsheetId = spreadsheet_id,
-      body = request_body
-    )
+
+    request = service.spreadsheets().batchUpdate(spreadsheetId=sh_id, body=batch_update_spreadsheet_request_body)
     response = request.execute()
 
-    print("Print Chart Successfully!")
+    # TODO: Change code below to process the `response` dict:
+    pprint(response)
 
 def Adding_Total(file_name):
   print("In Progress")
@@ -218,4 +236,9 @@ def Run_Finance():
       i = i + 1 
 #=======================================================
 
-Run_Finance()
+#Run_Finance()
+#Connect_to_GSpread()
+Pie_Chart_2()
+# API_NAME = "sheets"
+# API_VERS = "v4"
+# service = Create_Service(secret_file, API_NAME, API_VERS, scope_app)

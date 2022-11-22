@@ -100,7 +100,7 @@ def Update_PD_Worksheet(file_name):
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 #Gets the title of each worksheet from GSpread 
-def Title_Worksheet_List():
+def Title_Worksheet_List():  
     title_list = []
     sh = Connect_to_GSpread()
     worksheet_list = sh.worksheets()
@@ -124,7 +124,7 @@ def Common_Sheet(worksheet_list, file_list):
 
     return file_list
 
-def Pie_Chart_2():
+def Pie_Chart():
     from pprint import pprint
     from googleapiclient import discovery
 
@@ -141,7 +141,8 @@ def Pie_Chart_2():
 
     # The spreadsheet to apply the updates to.
     sh_id = "1Ok7bCIplJnvrLn8ltPFJrG9YxOpbeTvQzVrXoEsWPI4"
-    spreadsheet_id = '698839434'  # TODO: Update placeholder value.
+    #spreadsheet_id = '698839434'
+    spreadsheet_id = "1360060688"
     sheet_ID = "1676022265"
 
 
@@ -156,35 +157,160 @@ def Pie_Chart_2():
             "chart":{
               "spec":{
                 "title" : "Spending Types",
-                "pieChart": {
+                "basicChart": {
+                  "chartType" : "COLUMN",
                   "legendPosition" : "BOTTOM_LEGEND",
-                  "threeDimensional" : True,
-                  "domain" : {
-                    "sourceRange" : {
-                      "sources" : [
+                  "axis" : [{
+                    "position" : "BOTTOM_AXIS",
+                    "title" : "Types of Cost"
+                  },
+                  {
+                    "position" : "LEFT_AXIS",
+                    "title" : "Cost"
+                  }
+                  ],
+
+                  "domains": [
+                {
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex" : 0, #Row 1
-                          "endRowIndex" : 31, #Row 30
-                          "startColumnIndex" : 3, #Col D
-                          "endColumnIndex" : 4 
+                          "startRowIndex": 0,
+                          "endRowIndex": 1,
+                          "startColumnIndex": 3,
+                          "endColumnIndex": 4
                         }
                       ]
                     }
                   },
-                  "series" : {
-                    "sourceRange" : {
-                      "sources" : [
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
                         {
-                        "sheetId" : spreadsheet_id,
-                        "startRowIndex" : 0,
-                        "endRowIndex" : 1,
-                        "startColumnIndex" : 4,
-                        "endColumnIndex" : 5
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0,
+                          "endRowIndex": 1,
+                          "startColumnIndex": 4,
+                          "endColumnIndex": 5
                         }
                       ]
                     }
                   },
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0,
+                          "endRowIndex": 1,
+                          "startColumnIndex": 5,
+                          "endColumnIndex": 6
+                        }
+                      ]
+                    }
+                  },
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0,
+                          "endRowIndex": 1,
+                          "startColumnIndex": 6,
+                          "endColumnIndex": 7
+                        }
+                      ]
+                    }
+                  },
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0,
+                          "endRowIndex": 1,
+                          "startColumnIndex": 7,
+                          "endColumnIndex": 8
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "series": [
+                {
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 3, 
+                          "endColumnIndex": 4
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 4, 
+                          "endColumnIndex": 5
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 5, 
+                          "endColumnIndex": 6
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 6, 
+                          "endColumnIndex": 7
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 7, 
+                          "endColumnIndex": 8
+                        }
+                      ]
+                    }
+                  },
+                  "targetAxis": "LEFT_AXIS"
+                },
+                
+              ],
+              "headerCount" : 1
                 }
               },
               "position" : {
@@ -238,7 +364,7 @@ def Run_Finance():
 
 #Run_Finance()
 #Connect_to_GSpread()
-Pie_Chart_2()
+Pie_Chart()
 # API_NAME = "sheets"
 # API_VERS = "v4"
 # service = Create_Service(secret_file, API_NAME, API_VERS, scope_app)

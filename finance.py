@@ -41,8 +41,6 @@ def Connect_to_GSpread():
 
     # Open the spreadsheet
     sh = client.open("Personal Finance")
-    ws = sh.worksheet("Sheet1") 
-    val = ws.acell("B2").value
     
     print(sh)
     return sh
@@ -141,8 +139,7 @@ def Pie_Chart():
 
     # The spreadsheet to apply the updates to.
     sh_id = "1Ok7bCIplJnvrLn8ltPFJrG9YxOpbeTvQzVrXoEsWPI4"
-    #spreadsheet_id = '698839434'
-    spreadsheet_id = "1360060688"
+    spreadsheet_id = "2021772043"
     sheet_ID = "1676022265"
 
 
@@ -177,66 +174,110 @@ def Pie_Chart():
                       "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex": 0,
+                          "startRowIndex": 0, #Row 1
                           "endRowIndex": 1,
-                          "startColumnIndex": 3,
+                          "startColumnIndex": 0, #Col A
+                          "endColumnIndex": 1
+                        }
+                      ]
+                    }
+                  },
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0, #Row 1
+                          "endRowIndex": 1,
+                          "startColumnIndex": 1, #Col B
+                          "endColumnIndex": 2
+                        }
+                      ]
+                    }
+                  },
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0, #Row 1
+                          "endRowIndex": 1,
+                          "startColumnIndex": 2, #Col C
+                          "endColumnIndex": 3
+                        }
+                      ]
+                    }
+                  },
+
+                  "domain": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0, #Row 1
+                          "endRowIndex": 1,
+                          "startColumnIndex": 3, #Col D
                           "endColumnIndex": 4
                         }
                       ]
                     }
                   },
+
                   "domain": {
                     "sourceRange": {
                       "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex": 0,
+                          "startRowIndex": 0, #Row 1
                           "endRowIndex": 1,
-                          "startColumnIndex": 4,
+                          "startColumnIndex": 4, #Col E
                           "endColumnIndex": 5
                         }
                       ]
                     }
                   },
+
                   "domain": {
                     "sourceRange": {
                       "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex": 0,
+                          "startRowIndex": 0, #Row 1
                           "endRowIndex": 1,
-                          "startColumnIndex": 5,
+                          "startColumnIndex": 5, #Col F
                           "endColumnIndex": 6
                         }
                       ]
                     }
                   },
+
                   "domain": {
                     "sourceRange": {
                       "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex": 0,
+                          "startRowIndex": 0, #Row 1
                           "endRowIndex": 1,
-                          "startColumnIndex": 6,
+                          "startColumnIndex": 6, #Col G
                           "endColumnIndex": 7
                         }
                       ]
                     }
                   },
+
                   "domain": {
                     "sourceRange": {
                       "sources": [
                         {
                           "sheetId": spreadsheet_id,
-                          "startRowIndex": 0,
+                          "startRowIndex": 0, #Row 1
                           "endRowIndex": 1,
-                          "startColumnIndex": 7,
+                          "startColumnIndex": 7, #Col H
                           "endColumnIndex": 8
                         }
                       ]
                     }
-                  }
+                  },
                 }
               ],
               "series": [
@@ -248,7 +289,46 @@ def Pie_Chart():
                           "sheetId": spreadsheet_id,
                           "startRowIndex": 1, 
                           "endRowIndex": 2,
-                          "startColumnIndex": 3, 
+                          "startColumnIndex": 0, #Col A 
+                          "endColumnIndex": 1
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 0, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 1, #Col B
+                          "endColumnIndex": 2
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 2, #Col C
+                          "endColumnIndex": 3
+                        }
+                      ]
+                    }
+                  },
+                  "series": {
+                    "sourceRange": {
+                      "sources": [
+                        {
+                          "sheetId": spreadsheet_id,
+                          "startRowIndex": 1, 
+                          "endRowIndex": 2,
+                          "startColumnIndex": 3, #Col D
                           "endColumnIndex": 4
                         }
                       ]
@@ -261,7 +341,7 @@ def Pie_Chart():
                           "sheetId": spreadsheet_id,
                           "startRowIndex": 1, 
                           "endRowIndex": 2,
-                          "startColumnIndex": 4, 
+                          "startColumnIndex": 4, #Col E
                           "endColumnIndex": 5
                         }
                       ]
@@ -274,7 +354,7 @@ def Pie_Chart():
                           "sheetId": spreadsheet_id,
                           "startRowIndex": 1, 
                           "endRowIndex": 2,
-                          "startColumnIndex": 5, 
+                          "startColumnIndex": 5, #Col F
                           "endColumnIndex": 6
                         }
                       ]
@@ -287,7 +367,7 @@ def Pie_Chart():
                           "sheetId": spreadsheet_id,
                           "startRowIndex": 1, 
                           "endRowIndex": 2,
-                          "startColumnIndex": 6, 
+                          "startColumnIndex": 6, #Col G
                           "endColumnIndex": 7
                         }
                       ]
@@ -300,7 +380,7 @@ def Pie_Chart():
                           "sheetId": spreadsheet_id,
                           "startRowIndex": 1, 
                           "endRowIndex": 2,
-                          "startColumnIndex": 7, 
+                          "startColumnIndex": 7, #Col H
                           "endColumnIndex": 8
                         }
                       ]
@@ -362,9 +442,9 @@ def Run_Finance():
       i = i + 1 
 #=======================================================
 
-#Run_Finance()
+Run_Finance()
 #Connect_to_GSpread()
-Pie_Chart()
+#Pie_Chart()
 # API_NAME = "sheets"
 # API_VERS = "v4"
 # service = Create_Service(secret_file, API_NAME, API_VERS, scope_app)

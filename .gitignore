@@ -3,3 +3,10 @@
 
 #.VSCode
 .vscode
+
+#Json Files where keys are kept
+.Json
+.json
+
+#CSV Banking Folder
+BankingCSV
